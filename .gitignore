@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# OS
+.DS_Store
+
+# Local scratch data — uploads are never persisted by the app itself,
+# but keep this ignored in case anything is dropped here manually during
+# debugging (see README, "No Database / No Persistent Storage").
+data/input/*
+data/output/*
+!data/input/.gitkeep
+!data/output/.gitkeep
+
+# Editors
+.vscode/
+.idea/

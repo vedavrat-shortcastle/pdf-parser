@@ -1,0 +1,49 @@
+# Parsing Agent — dependencies
+#
+# NONE of these are installed in the environment this code was written in
+# (no network access there). Install them on your Mac with:
+#
+#   python3 -m venv .venv
+#   source .venv/bin/activate
+#   python3 -m pip install --upgrade pip
+#   pip install -r requirements.txt
+#
+# Everything below is used by Stage 1 (PDF/image extraction) or
+# Milestone 2 (OCR). Nothing here talks to a database or a vector
+# store — this project deliberately has none.
+#
+# --- Why these are ">=" and not exact pins ---
+# This project was first pinned to exact versions from mid-2024, before
+# Python 3.14 existed. On Python 3.14, pip tried to build those old
+# versions from source (no prebuilt wheel exists for that Python on
+# that old release) and failed with "metadata-generation-failed" —
+# that is NOT a problem with your Mac, it's this file being out of
+# date. The floors below are the first release of each package known
+# to ship a Python 3.14 wheel; ">=" lets pip pick whatever current
+# version satisfies that and has a wheel for your actual Python, so
+# this doesn't go stale again the next time Python releases a version.
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.6
+python-multipart>=0.0.9      # required by FastAPI to parse multipart/form-data uploads
+pymupdf>=1.26.6                # PDF parsing/rendering — import as `pymupdf`, not `fitz`. 1.26.6 is the first release with Python 3.14 wheels (released 2025-11-05); older pins fail to build on 3.14.
+Pillow>=11.0.0                 # image handling for rendered pages / uploaded images. 11.0.0 is the first release with Python 3.13/3.14 wheels; 10.x does not build cleanly on 3.14.
+
+# --- Milestone 2: OCR ---
+# pytesseract is a thin Python wrapper — it calls the `tesseract` SYSTEM
+# BINARY, which is not installed by pip. On macOS:
+#     brew install tesseract
+# Without that binary installed and on PATH, src/ocr/tesseract.py raises
+# a clear OcrError rather than crashing unhelpfully.
+pytesseract>=0.3.13
+
+# --- Milestone 4: Chess Diagram Detection + Diagram-to-FEN ---
+python-chess>=1.999
+chess>=1.10.0
+onnxruntime>=1.20.0
+opencv-python-headless>=4.10.0
+numpy>=2.0.0
+
+pytest>=8.3.3
+httpx>=0.27.2                  # used by FastAPI's TestClient in tests
+
